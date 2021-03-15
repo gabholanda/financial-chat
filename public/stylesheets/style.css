@@ -3,12 +3,21 @@
   justify-content: center;
   align-items: center;
   flex-flow: column;
+  height: 100vh;
 }
 
 #messages {
   list-style-type: none;
   margin: 0;
   padding: 0;
+  border: 1px solid black;
+  border-radius: 10px;
+  height: 80vh;
+  max-height: 80vh;
+  width: 90vh;
+  overflow-y: scroll;
+  overflow-wrap: break-word;
+  scroll-behavior: smooth;
 }
 
 #messages > li {
@@ -17,4 +26,9 @@
 
 #messages > li:nth-child(odd) {
   background: #efefef;
+}
+
+#submit {
+  margin-top: 10px;
+  width: 90vh;
 }
