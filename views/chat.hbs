@@ -1,0 +1,13 @@
+<div class="container">
+  <ul id="messages">
+  </ul>
+
+  <form action="/sendMessage" id="submit" method="post">
+    <input type="text" id="message">
+    <button type="submit">Send</button>
+  </form>
+
+  <input type="hidden" value={{nickname}} id="nickname">
+</div>
+
+<script src="/javascripts/socketIO.js"></script>

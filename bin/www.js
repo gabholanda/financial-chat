@@ -1,6 +1,6 @@
 const http = require("http");
-
 let app = require("../app");
+const socketService = require("../services/socket.service");
 
 // catch 404 and render a not-found.hbs template
 app.use((req, res, next) => {
@@ -20,8 +20,9 @@ app.use((err, req, res, next) => {
 });
 
 let server = http.createServer(app);
+socketService.start(server);
 
-server.on("error", error => {
+server.on("error", (error) => {
   if (error.syscall !== "listen") {
     throw error;
   }
@@ -40,5 +41,7 @@ server.on("error", error => {
 });
 
 server.listen(process.env.PORT, () => {
-  console.log(`Listening on ${process.env.SERVER_URL}:${process.env.PORT || 3000}`);
+  console.log(
+    `Listening on ${process.env.SERVER_URL}:${process.env.PORT || 3000}`
+  );
 });
