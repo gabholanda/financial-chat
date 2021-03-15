@@ -16,7 +16,7 @@ app.use(bodyParser.json());
 // for parsing application/xwww-
 app.use(bodyParser.urlencoded({ extended: true }));
 
-queueManager.startPublisher("stocks");
+queueManager.start("stocks");
 
 const index = require("./routes/index");
 app.use("/", index);
