@@ -1,7 +1,7 @@
 const amqp = require("amqplib");
 const queueManager = {};
 
-queueManager.start = (queue) => {
+queueManager.start = (queue, callback) => {
   amqp
     .connect(process.env.RABBITMQ_URL)
     .then((conn) => {
@@ -9,8 +9,8 @@ queueManager.start = (queue) => {
       return conn.createChannel();
     })
     .then(async (ch) => {
-      processMsg = (msg) => {
-        queueManager.callback(msg, (ok) => {
+      const processMsg = (msg) => {
+        callback(msg, (ok) => {
           try {
             if (ok) ch.ack(msg);
             else ch.reject(msg);
@@ -38,16 +38,6 @@ queueManager.publish = (routingKey, content) => {
       }
     }
   );
-};
-
-queueManager.callback = (msg, cb) => {
-  try {
-    const obj = JSON.parse(msg.content.toString());
-    cb(true);
-  } catch (err) {
-    console.error(`Error -> ${err}`);
-    return cb(true);
-  }
 };
 
 module.exports = queueManager;
