@@ -9,7 +9,11 @@ if (form) {
   form.addEventListener("submit", (e) => {
     e.preventDefault();
     if (input.value) {
-      socket.emit("chat message", `${nickname.value}: ${input.value}`);
+      const data = {
+        nickname: nickname.value,
+        content: input.value,
+      };
+      socket.emit("chat message", data);
       input.value = "";
     }
   });
