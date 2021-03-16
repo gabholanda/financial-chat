@@ -1,16 +1,25 @@
-const onMessage = (io, msg, messages) => {
-  const command = msg.match(/^(\/stock=)/);
+const socketBot = require("./stockBot.service");
+
+const onMessage = (io, data, messages) => {
+  const msg = `${data.nickname}: ${data.content}`;
+  messages.push(msg);
+  const command = data.content.match(/^(\/stock=)/);
   if (command) {
-    const stockCode = msg.split("=")[1];
-    // Fire bot and API
+    const stockCode = data.content.split("=")[1];
+    const content = {
+      action: "emitStock",
+      domain: "socketBot",
+      stockCode,
+      messages,
+    };
+    socketBot.publishToQueue("stocks", content);
+  }
+
+  if (messages.length >= 50) {
+    messages.slice(0, 1);
+    io.emit("chat message", { msg, update: true });
   } else {
-    messages.push(msg);
-    if (messages.length >= 50) {
-      messages.slice(0, 1);
-      io.emit("chat message", { msg, update: true });
-    } else {
-      io.emit("chat message", { msg, update: false });
-    }
+    io.emit("chat message", { msg, update: false });
   }
 };
 
